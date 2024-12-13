@@ -5,12 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wiki User Details</title>
     <style>
+        :root {
+            /* Light theme variables */
+            --bg-color: #f8f9fa;
+            --text-color: #343a40;
+            --card-bg: #fff;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --input-border: #ced4da;
+            --hover-bg: rgba(255, 81, 47, 0.1);
+        }
+
+        [data-theme="dark"] {
+            /* Dark theme variables */
+            --bg-color: #1a1a1a;
+            --text-color: #e1e1e1;
+            --card-bg: #2d2d2d;
+            --card-shadow: rgba(0, 0, 0, 0.3);
+            --input-border: #4a4a4a;
+            --hover-bg: rgba(255, 81, 47, 0.2);
+        }
+
+        /* Update existing styles to use CSS variables */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f8f9fa;
-            color: #343a40;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             text-align: center;
             overflow-x: hidden; /* Prevent horizontal scrollbar */
         }
@@ -25,10 +46,9 @@
             color: white;
             padding: 1em;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            transition: background 0.3s ease;
-            animation: gradientShift 10s ease infinite;
-            background-size: 200% 200%;
+            box-shadow: 0 4px 15px var(--card-shadow);
+            position: relative;
+            z-index: 1;
         }
         
         .columns {
@@ -44,11 +64,13 @@
         main {
             max-width: 600px;
             margin: 20px auto;
-            background-color: #fff;
+            background-color: var(--card-bg);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px var(--card-shadow);
             animation: fadeIn 0.5s ease-in-out; /* Fade-in animation */
+            position: relative;
+            z-index: 1;
         }
 
         form {
@@ -67,8 +89,10 @@
             margin-bottom: 20px;
             width: 60%;
             box-sizing: border-box;
-            border: 1px solid #ced4da;
+            border: 1px solid var(--input-border);
             border-radius: 5px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
         }
 
         button {
@@ -87,19 +111,19 @@
         }
         
         #wishAnniversaryButton {
-    		background: linear-gradient(45deg, #FF512F, #DD2476);
-    		color: white;
-    		padding: 10px 20px;
-    		border: none;
-    		cursor: pointer;
-    		border-radius: 5px;
-    		transition: all 0.3s ease
-		}
+            background: linear-gradient(45deg, #FF512F, #DD2476);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease
+        }
 
-		#wishAnniversaryButton:hover {
-    		background: linear-gradient(45deg, #DD2476, #FF8C42);
-    		transform: translateY(-2px);
-		}
+        #wishAnniversaryButton:hover {
+            background: linear-gradient(45deg, #DD2476, #FF8C42);
+            transform: translateY(-2px);
+        }
 
         #userDetails {
             margin-top: 20px;
@@ -108,10 +132,10 @@
             flex-wrap: wrap;
             text-align: center;
         }
-		
+        
         #userDetails h2 {
             color: #DD2476;
-			text-align: center;
+            text-align: center;
             margin-bottom: 10px;
         }
 
@@ -126,7 +150,7 @@
             font-weight: bold;
             margin-top: 20px;
             font-size: 20px;
-			margin-bottom: 20px;
+            margin-bottom: 20px;
         }
 
         @keyframes fadeIn {
@@ -145,7 +169,7 @@
             width: 100%;
             max-height: 300px;
             overflow-y: auto;
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--card-bg);
             border: 2px solid #DD2476;
             border-radius: 10px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.1);
@@ -162,8 +186,8 @@
             display: flex;
             flex-direction: column;
             transition: all 0.3s ease;
-            color: #343a40;
-            background: rgba(255, 255, 255, 0.95);
+            color: var(--text-color);
+            background: var(--card-bg);
         }
 
         .autocomplete-item:last-child {
@@ -171,7 +195,7 @@
         }
 
         .autocomplete-item:hover {
-            background: linear-gradient(45deg, rgba(255, 81, 47, 0.1), rgba(221, 36, 118, 0.1));
+            background: var(--hover-bg);
             transform: translateX(5px);
         }
 
@@ -360,9 +384,9 @@
         #recentContributions {
             margin: 20px auto;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--card-bg);
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px var(--card-shadow);
             text-align: left;
             max-width:93%;
         }
@@ -377,7 +401,7 @@
             padding: 15px;
             margin: 10px 0;
             border-left: 4px solid #DD2476;
-            background: rgba(255, 255, 255, 0.8);
+            background: var(--card-bg);
             border-radius: 5px;
             transition: all 0.3s ease;
             animation: fadeIn 0.5s ease-in-out;
@@ -385,7 +409,7 @@
 
         .contribution-item:hover {
             transform: translateX(5px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px var(--card-shadow);
         }
 
         .contribution-title {
@@ -441,6 +465,212 @@
             color: #383d41;
         }
 
+        /* Update the contribution size badges for dark mode */
+        [data-theme="dark"] .size-positive {
+            background-color: #1e4529;
+            color: #4ade80;
+        }
+
+        [data-theme="dark"] .size-negative {
+            background-color: #4c1d24;
+            color: #fca5a5;
+        }
+
+        [data-theme="dark"] .size-neutral {
+            background-color: #374151;
+            color: #9ca3af;
+        }
+
+        /* Style for theme toggle button */
+        #themeToggle {
+            background: none;
+            border: none;
+            font-size: 1.2em;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        #themeToggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Update the header styles */
+        header {
+            background: linear-gradient(
+                45deg,
+                #FF512F 0%,
+                #DD2476 50%,
+                #FF8C42 100%
+            );
+            color: white;
+            padding: 1em;
+            text-align: center;
+            box-shadow: 0 4px 15px var(--card-shadow);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Update main styles */
+        main {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--card-shadow);
+            animation: fadeIn 0.5s ease-in-out; /* Fade-in animation */
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Update the background container opacity for dark mode */
+        [data-theme="dark"] .background-container {
+            opacity: 0.05;
+        }
+
+        /* Update link colors for dark mode */
+        [data-theme="dark"] a {
+            color: #ff8c42;
+        }
+
+        [data-theme="dark"] a:hover {
+            color: #ff512f;
+        }
+
+        /* Update label color for dark mode */
+        [data-theme="dark"] label {
+            color: #ff8c42;
+        }
+
+        /* Update the contribution meta text color for dark mode */
+        [data-theme="dark"] .contribution-meta {
+            color: #888;
+        }
+
+        /* Update the autocomplete item username color for dark mode */
+        [data-theme="dark"] .autocomplete-item .username {
+            color: #ff8c42;
+        }
+
+        /* Update the days to anniversary color for dark mode */
+        [data-theme="dark"] #daysToAnniversary {
+            color: #ff8c42;
+        }
+
+        /* Update the recent contributions title color for dark mode */
+        [data-theme="dark"] #recentContributions h3 {
+            color: #ff8c42;
+        }
+
+        /* Update the contribution title color for dark mode */
+        [data-theme="dark"] .contribution-title {
+            color: #ff8c42;
+        }
+
+        /* Update the language selector for dark mode */
+        [data-theme="dark"] #languageSelector {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border-color: #ff8c42;
+        }
+
+        [data-theme="dark"] #languageSelector:hover {
+            background: #ff8c42;
+            color: #1a1a1a;
+        }
+
+        [data-theme="dark"] #languageSelector option {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        /* Update the theme toggle button styles */
+        #themeToggle {
+            background-color: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #themeToggle:hover {
+            transform: scale(1.1);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Remove these overriding styles that were causing issues */
+        main {
+            background-color: var(--card-bg) !important;
+        }
+
+        header {
+            background-color: transparent !important;
+        }
+
+        /* Add/update these styles in the <style> section */
+
+        /* Container for the header controls */
+        .header-controls {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        /* Update language selector styles */
+        #languageSelector {
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            background: transparent;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        #languageSelector:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        #languageSelector option {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            padding: 8px;
+        }
+
+        /* Update theme toggle button styles */
+        #themeToggle {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            color: white;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        #themeToggle:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
     </style>
 </head>
 <body>
@@ -469,8 +699,8 @@
 </div>
 
 <header>
-    <div style="position: absolute; right: 20px; top: 20px;">
-        <select id="languageSelector" onchange="changeLanguage()" style="padding: 5px; border-radius: 5px;">
+    <div class="header-controls">
+        <select id="languageSelector" onchange="changeLanguage()">
             <option value="en">English</option>
             <option value="es">Español</option>
             <option value="fr">Français</option>
@@ -479,6 +709,9 @@
             <option value="zh">中文</option>
             <option value="ml">മലയാളം</option>
         </select>
+        <button id="themeToggle" onclick="toggleTheme()">
+            🌙
+        </button>
     </div>
     <h1 id="pageTitle">Wiki Anniversary (User)</h1>
 </header>
@@ -576,7 +809,7 @@ const translations = {
         recentContributions: "Letzte Beiträge"
     },
     hi: {
-        pageTitle: "विकि वर्षगांठ (उपयोगकर्ता)",
+        pageTitle: "���िकि वर्षगांठ (उपयोगकर्ता)",
         enterUsername: "उपयोगकर्ता नाम दर्ज करें:",
         getUserDetails: "उपयोगकर्ता विवरण प्राप्त करें",
         registrationDate: "पंजीकरण तिथी:",
@@ -600,8 +833,8 @@ const translations = {
         groups: "用户组：",
         homeWiki: "主维基：",
         id: "ID：",
-        rights: "权限：",
-        daysToNextAnniversary: "距离下个周年还有：",
+        rights: "���限：",
+        daysToNextAnniversary: "离下个周年还有：",
         wishAnniversary: "祝贺周年",
         userNotFound: "未找到用户：",
         wikiUsername: "维基用户名",
@@ -617,8 +850,8 @@ const translations = {
         homeWiki: "ഹോം വിക്കി:",
         id: "ഐഡി:",
         rights: "അവകാശങ്ങൾ:",
-        daysToNextAnniversary: "അടുത്ത വാർഷികത്തിലേക്കു ദിവസങ്ങൾ:",
-        wishAnniversary: "വാർഷികാശംസകൾ നേരുക",
+        daysToNextAnniversary: "അടുത്ത വാർഷികത്തിലേയ്കു ദിവസങ്ങൾ:",
+        wishAnniversary: "വാർഷികാശംസൾ നേരുക",
         userNotFound: "ഉപയോക്താവിനെ കണ്ടെത്തിയില്ല:",
         wikiUsername: "വിക്കി ഉപയോക്തൃനാമം",
         recentContributions: "സമീപകാല സംഭാവനകൾ"
@@ -690,10 +923,9 @@ function displayUserDetails(user) {
         const usernameFromURL = urlParams.get('username');
 
         if (usernameFromURL) {
-            // Set the username in the input field
+            
             document.getElementById('username').value = usernameFromURL;
 
-            // Trigger the user details retrieval
             getUserDetails();
         }
     }, 2000);
@@ -1108,6 +1340,57 @@ function displayRecentContributions(contributions) {
 
     contributionsDiv.innerHTML = html;
 }
+
+// Theme toggle functionality
+function toggleTheme() {
+    const html = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    
+    // Add transition class
+    document.body.classList.add('theme-transition');
+    
+    if (html.getAttribute('data-theme') === 'dark') {
+        html.removeAttribute('data-theme');
+        themeToggle.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+    } else {
+        html.setAttribute('data-theme', 'dark');
+        themeToggle.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+    }
+    
+    // Remove transition class after animation completes
+    setTimeout(() => {
+        document.body.classList.remove('theme-transition');
+    }, 500);
+}
+
+// Initialize theme from localStorage
+function initializeTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    const html = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    
+    if (savedTheme === 'dark') {
+        html.setAttribute('data-theme', 'dark');
+        themeToggle.textContent = '☀️';
+    } else {
+        html.removeAttribute('data-theme');
+        themeToggle.textContent = '🌙';
+    }
+}
+
+// Call initializeTheme when the page loads
+document.addEventListener('DOMContentLoaded', initializeTheme);
+
+// Add this CSS for smooth transitions
+const styleElement = document.createElement('style');
+styleElement.textContent = `
+    .theme-transition * {
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+    }
+`;
+document.head.appendChild(styleElement);
 </script>
 
 </body>

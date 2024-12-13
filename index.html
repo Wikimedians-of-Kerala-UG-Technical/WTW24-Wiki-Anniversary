@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wiki User Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
             /* Light theme variables */
@@ -851,7 +852,7 @@ const translations = {
         id: "ഐഡി:",
         rights: "അവകാശങ്ങൾ:",
         daysToNextAnniversary: "അടുത്ത വാർഷികത്തിലേയ്കു ദിവസങ്ങൾ:",
-        wishAnniversary: "വാർഷികാശംസൾ നേരുക",
+        wishAnniversary: "വാർഷികാശംസൾ ��േരുക",
         userNotFound: "ഉപയോക്താവിനെ കണ്ടെത്തിയില്ല:",
         wikiUsername: "വിക്കി ഉപയോക്തൃനാമം",
         recentContributions: "സമീപകാല സംഭാവനകൾ"
@@ -984,13 +985,13 @@ async function displayUserDetails(user) {
 
         const leftColumn = document.createElement('div');
         leftColumn.classList.add('column');
-        leftColumn.innerHTML = `<p><strong>Registration Date:</strong></p>
+        leftColumn.innerHTML = `<p><strong><i class="fas fa-calendar-alt"></i> Registration Date:</strong></p>
                                 <p>${formattedDate}</p>
-                                <p><strong>Total Edit Count:</strong></p>
+                                <p><strong><i class="fas fa-edit"></i> Total Edit Count:</strong></p>
                                 <p>${user.editcount}</p>`;
 
         if (user.groups.length > 0) {
-            leftColumn.innerHTML += `<p><strong>Groups:</strong></p><p> ${user.groups.join(', ')}</p>`;
+            leftColumn.innerHTML += `<p><strong><i class="fas fa-users"></i> Groups:</strong></p><p> ${user.groups.join(', ')}</p>`;
         }
 
         const rightColumn = document.createElement('div');
@@ -999,15 +1000,15 @@ async function displayUserDetails(user) {
         try {
             // Fetch homewiki URL asynchronously and store it in the variable
             homewikiUrl = await fetchHomewikiUrl(user.home, user.merged);
-            rightColumn.innerHTML = `<p><strong>Home Wiki:</strong></p>
+            rightColumn.innerHTML = `<p><strong><i class="fas fa-home"></i> Home Wiki:</strong></p>
                         <p><a href="${homewikiUrl}" target="_blank">${user.home}</a></p>
-                        <p><strong>ID:</strong></p>
+                        <p><strong><i class="fas fa-id-badge"></i> ID:</strong></p>
                         <p>${user.id}</p>`;
         } catch (error) {
             console.error("Error fetching homewiki URL:", error);
-            rightColumn.innerHTML = `<p><strong>Home Wiki:</strong></p>
+            rightColumn.innerHTML = `<p><strong><i class="fas fa-home"></i> Home Wiki:</strong></p>
                                     <p>Not available</p>
-                                    <p><strong>Home Wiki ID:</strong></p>
+                                    <p><strong><i class="fas fa-id-badge"></i> Home Wiki ID:</strong></p>
                                     <p>${user.id}</p>`;
         }
 

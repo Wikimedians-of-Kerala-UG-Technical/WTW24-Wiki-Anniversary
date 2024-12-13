@@ -124,6 +124,126 @@
             to { opacity: 1; }
         }
 
+        .autocomplete-container {
+            position: relative;
+            width: 60%;
+            margin: 0 auto;
+        }
+
+        .autocomplete-list {
+            position: absolute;
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            background: #2c3e50;
+            border: 2px solid #34495e;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+            margin-top: 5px;
+        }
+
+        .autocomplete-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            text-align: left;
+            border-bottom: 1px solid #34495e;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            color: #ecf0f1;
+        }
+
+        .autocomplete-item:last-child {
+            border-bottom: none;
+        }
+
+        .autocomplete-item:hover {
+            background-color: #34495e;
+            transform: scale(1.02);
+        }
+
+        .autocomplete-item.selected {
+            background-color: #3498db;
+            border-left: 4px solid #2ecc71;
+        }
+
+        .autocomplete-item .username {
+            font-weight: 500;
+            color: #ecf0f1;
+            margin-bottom: 4px;
+            font-size: 1.1em;
+        }
+
+        .autocomplete-item .details {
+            font-size: 0.85em;
+            color: #bdc3c7;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .autocomplete-item .details::before {
+            content: '📝';
+            font-size: 1em;
+        }
+
+        #username {
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            width: 60%;
+            box-sizing: border-box;
+            border: 2px solid #3498db;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #fff;
+            color: #2c3e50;
+        }
+
+        #username:focus {
+            outline: none;
+            border-color: #2ecc71;
+            box-shadow: 0 0 0 4px rgba(46,204,113,0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Add a custom scrollbar */
+        .autocomplete-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .autocomplete-list::-webkit-scrollbar-track {
+            background: #34495e;
+            border-radius: 4px;
+        }
+
+        .autocomplete-list::-webkit-scrollbar-thumb {
+            background: #3498db;
+            border-radius: 4px;
+        }
+
+        .autocomplete-list::-webkit-scrollbar-thumb:hover {
+            background: #2ecc71;
+        }
+
+        /* Add animation for items */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .autocomplete-item {
+            animation: slideIn 0.3s ease forwards;
+        }
+
     </style>
 </head>
 <body>
@@ -135,8 +255,17 @@
 <main>
     <div id="usernameInput" style="display: none;">
         <form id="userForm">
-            <label for="username">Enter Username:</label>
-            <input type="text" id="username" name="username" placeholder="Wiki Username" required onkeypress="handleKeyPress(event)">
+            <div class="autocomplete-container">
+                <label for="username">Enter Username:</label>
+                <input type="text" 
+                       id="username" 
+                       name="username" 
+                       placeholder="Wiki Username" 
+                       required 
+                       oninput="handleInput(event)" 
+                       onkeydown="handleKeyDown(event)">
+                <div id="autocompleteList" class="autocomplete-list"></div>
+            </div>
             <button type="button" onclick="getUserDetails()">Get User Details</button>
         </form>
     </div>
@@ -365,6 +494,119 @@ function showAnniversaryNotification(daysToAnniversary) {
   document.getElementById('usernameInput').style.display = 'block';
         }, 2000);
     
+function handleInput(event) {
+    const query = event.target.value.trim();
+    const autocompleteList = document.getElementById('autocompleteList');
+    
+    if (query.length < 3) {
+        autocompleteList.style.display = 'none';
+        return;
+    }
+
+    // Using Wikipedia's API to search for usernames
+    fetch(`https://en.wikipedia.org/w/api.php?action=query&list=allusers&auprefix=${query}&aulimit=10&format=json&origin=*`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.query && data.query.allusers) {
+                displayAutocompleteResults(data.query.allusers);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            autocompleteList.style.display = 'none';
+        });
+}
+
+function displayAutocompleteResults(users) {
+    const autocompleteList = document.getElementById('autocompleteList');
+    const query = document.getElementById('username').value.trim();
+    autocompleteList.innerHTML = '';
+
+    if (users.length === 0) {
+        autocompleteList.style.display = 'none';
+        return;
+    }
+
+    users.forEach(user => {
+        const item = document.createElement('div');
+        item.className = 'autocomplete-item';
+        
+        // Create username element with highlighting
+        const usernameDiv = document.createElement('div');
+        usernameDiv.className = 'username';
+        const username = user.name;
+        const lowerUsername = username.toLowerCase();
+        const lowerQuery = query.toLowerCase();
+        const index = lowerUsername.indexOf(lowerQuery);
+        
+        if (index >= 0) {
+            const before = username.slice(0, index);
+            const match = username.slice(index, index + query.length);
+            const after = username.slice(index + query.length);
+            usernameDiv.innerHTML = `${before}<strong style="color: #007bff">${match}</strong>${after}`;
+        } else {
+            usernameDiv.textContent = username;
+        }
+
+        // Create details element
+        const detailsDiv = document.createElement('div');
+        detailsDiv.className = 'details';
+        const editCount = user.editcount ? `${user.editcount.toLocaleString()} edits` : 'No edits';
+        detailsDiv.textContent = `${editCount}`;
+
+        item.appendChild(usernameDiv);
+        item.appendChild(detailsDiv);
+        
+        item.onclick = () => {
+            document.getElementById('username').value = user.name;
+            autocompleteList.style.display = 'none';
+            getUserDetails();
+        };
+
+        autocompleteList.appendChild(item);
+    });
+
+    autocompleteList.style.display = 'block';
+}
+
+function handleKeyDown(event) {
+    const autocompleteList = document.getElementById('autocompleteList');
+    const items = autocompleteList.getElementsByClassName('autocomplete-item');
+    let selectedItem = autocompleteList.querySelector('.autocomplete-item.selected');
+    let selectedIndex = Array.from(items).indexOf(selectedItem);
+
+    if (items.length === 0) return;
+
+    if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        selectedIndex = (selectedIndex + 1) % items.length;
+    } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+    } else if (event.key === 'Enter' && selectedItem) {
+        event.preventDefault();
+        selectedItem.click();
+        return;
+    } else {
+        return;
+    }
+
+    Array.from(items).forEach((item, index) => {
+        if (index === selectedIndex) {
+            item.classList.add('selected');
+            item.scrollIntoView({ block: 'nearest' });
+        } else {
+            item.classList.remove('selected');
+        }
+    });
+}
+
+// Close autocomplete list when clicking outside
+document.addEventListener('click', function(event) {
+    if (!event.target.matches('#username')) {
+        document.getElementById('autocompleteList').style.display = 'none';
+    }
+});
 </script>
 
 </body>

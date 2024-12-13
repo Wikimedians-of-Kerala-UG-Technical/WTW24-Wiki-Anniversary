@@ -111,19 +111,19 @@
         }
         
         #wishAnniversaryButton {
-    		background: linear-gradient(45deg, #FF512F, #DD2476);
-    		color: white;
-    		padding: 10px 20px;
-    		border: none;
-    		cursor: pointer;
-    		border-radius: 5px;
-    		transition: all 0.3s ease
-		}
+            background: linear-gradient(45deg, #FF512F, #DD2476);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease
+        }
 
-		#wishAnniversaryButton:hover {
-    		background: linear-gradient(45deg, #DD2476, #FF8C42);
-    		transform: translateY(-2px);
-		}
+        #wishAnniversaryButton:hover {
+            background: linear-gradient(45deg, #DD2476, #FF8C42);
+            transform: translateY(-2px);
+        }
 
         #userDetails {
             margin-top: 20px;
@@ -132,10 +132,10 @@
             flex-wrap: wrap;
             text-align: center;
         }
-		
+        
         #userDetails h2 {
             color: #DD2476;
-			text-align: center;
+            text-align: center;
             margin-bottom: 10px;
         }
 
@@ -150,7 +150,7 @@
             font-weight: bold;
             margin-top: 20px;
             font-size: 20px;
-			margin-bottom: 20px;
+            margin-bottom: 20px;
         }
 
         @keyframes fadeIn {
@@ -809,7 +809,7 @@ const translations = {
         recentContributions: "Letzte Beiträge"
     },
     hi: {
-        pageTitle: "विकि वर्षगांठ (उपयोगकर्ता)",
+        pageTitle: "���िकि वर्षगांठ (उपयोगकर्ता)",
         enterUsername: "उपयोगकर्ता नाम दर्ज करें:",
         getUserDetails: "उपयोगकर्ता विवरण प्राप्त करें",
         registrationDate: "पंजीकरण तिथी:",
@@ -833,7 +833,11 @@ const translations = {
         groups: "用户组：",
         homeWiki: "主维基：",
         id: "ID：",
+<<<<<<< HEAD
         rights: "权限：",
+=======
+        rights: "���限：",
+>>>>>>> d792bc8369c80861042c6830c1255613bdaea61b
         daysToNextAnniversary: "离下个周年还有：",
         wishAnniversary: "祝贺周年",
         userNotFound: "未找到用户：",
@@ -929,10 +933,9 @@ function displayUserDetails(user) {
         const usernameFromURL = urlParams.get('username');
 
         if (usernameFromURL) {
-            // Set the username in the input field
+            
             document.getElementById('username').value = usernameFromURL;
 
-            // Trigger the user details retrieval
             getUserDetails();
         }
     }, 2000);

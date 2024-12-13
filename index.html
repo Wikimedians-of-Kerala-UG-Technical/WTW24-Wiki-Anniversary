@@ -244,12 +244,44 @@
             animation: slideIn 0.3s ease forwards;
         }
 
+        /* Add these styles */
+        #languageSelector {
+            background-color: white;
+            border: 1px solid #007bff;
+            color: #007bff;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        #languageSelector:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        #languageSelector option {
+            background-color: white;
+            color: #007bff;
+        }
+
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Wiki Anniversary (User)</h1>
+    <div style="position: absolute; right: 20px; top: 20px;">
+        <select id="languageSelector" onchange="changeLanguage()" style="padding: 5px; border-radius: 5px;">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="hi">हिंदी</option>
+            <option value="zh">中文</option>
+        </select>
+    </div>
+    <h1 id="pageTitle">Wiki Anniversary (User)</h1>
 </header>
 
 <main>
@@ -278,6 +310,156 @@
 </main>
 
 <script>
+const translations = {
+    en: {
+        pageTitle: "Wiki Anniversary (User)",
+        enterUsername: "Enter Username:",
+        getUserDetails: "Get User Details",
+        registrationDate: "Registration Date:",
+        totalEditCount: "Total Edit Count:",
+        groups: "Groups:",
+        homeWiki: "Home Wiki:",
+        id: "ID:",
+        rights: "Rights:",
+        daysToNextAnniversary: "Days to next Anniversary:",
+        wishAnniversary: "Wish Anniversary",
+        userNotFound: "User not found:",
+        wikiUsername: "Wiki Username"
+    },
+    es: {
+        pageTitle: "Aniversario Wiki (Usuario)",
+        enterUsername: "Ingrese nombre de usuario:",
+        getUserDetails: "Obtener detalles del usuario",
+        registrationDate: "Fecha de registro:",
+        totalEditCount: "Total de ediciones:",
+        groups: "Grupos:",
+        homeWiki: "Wiki principal:",
+        id: "ID:",
+        rights: "Permisos:",
+        daysToNextAnniversary: "Días para el próximo aniversario:",
+        wishAnniversary: "Desear feliz aniversario",
+        userNotFound: "Usuario no encontrado:",
+        wikiUsername: "Nombre de usuario Wiki"
+    },
+    fr: {
+        pageTitle: "Anniversaire Wiki (Utilisateur)",
+        enterUsername: "Entrez le nom d'utilisateur:",
+        getUserDetails: "Obtenir les détails",
+        registrationDate: "Date d'inscription:",
+        totalEditCount: "Nombre total de modifications:",
+        groups: "Groupes:",
+        homeWiki: "Wiki principal:",
+        id: "ID:",
+        rights: "Droits:",
+        daysToNextAnniversary: "Jours avant le prochain anniversaire:",
+        wishAnniversary: "Souhaiter l'anniversaire",
+        userNotFound: "Utilisateur non trouvé:",
+        wikiUsername: "Nom d'utilisateur Wiki"
+    },
+    de: {
+        pageTitle: "Wiki-Jubiläum (Benutzer)",
+        enterUsername: "Benutzername eingeben:",
+        getUserDetails: "Benutzerdetails abrufen",
+        registrationDate: "Registrierungsdatum:",
+        totalEditCount: "Gesamtzahl der Bearbeitungen:",
+        groups: "Gruppen:",
+        homeWiki: "Haupt-Wiki:",
+        id: "ID:",
+        rights: "Rechte:",
+        daysToNextAnniversary: "Tage bis zum nächsten Jubiläum:",
+        wishAnniversary: "Jubiläum wünschen",
+        userNotFound: "Benutzer nicht gefunden:",
+        wikiUsername: "Wiki-Benutzername"
+    },
+    hi: {
+        pageTitle: "विकि वर्षगांठ (उपयोगकर्ता)",
+        enterUsername: "उपयोगकर्ता नाम दर्ज करें:",
+        getUserDetails: "उपयोगकर्ता विवरण प्राप्त करें",
+        registrationDate: "पंजीकरण तिथि:",
+        totalEditCount: "कुल संपादन:",
+        groups: "समूह:",
+        homeWiki: "मुख्य विकि:",
+        id: "आईडी:",
+        rights: "अधिकार:",
+        daysToNextAnniversary: "अगली वर्षगांठ तक दिन:",
+        wishAnniversary: "वर्षगांठ की शुभकामनाएं",
+        userNotFound: "उपयोगकर्ता नहीं मिला:",
+        wikiUsername: "विकि उपयोगकर्ता नाम"
+    },
+    zh: {
+        pageTitle: "维基周年（用户）",
+        enterUsername: "输入用户名：",
+        getUserDetails: "获取用户详情",
+        registrationDate: "注册日期：",
+        totalEditCount: "总编辑次数：",
+        groups: "用户组：",
+        homeWiki: "主维基：",
+        id: "ID：",
+        rights: "权限：",
+        daysToNextAnniversary: "距离下个周年还有：",
+        wishAnniversary: "祝贺周年",
+        userNotFound: "未找到用户：",
+        wikiUsername: "维基用户名"
+    }
+};
+
+// Add this function to handle language changes
+function changeLanguage() {
+    const lang = document.getElementById('languageSelector').value;
+    const texts = translations[lang];
+    
+    // Update all text elements
+    document.getElementById('pageTitle').textContent = texts.pageTitle;
+    document.querySelector('label[for="username"]').textContent = texts.enterUsername;
+    document.querySelector('#username').placeholder = texts.wikiUsername;
+    document.querySelector('button[onclick="getUserDetails()"]').textContent = texts.getUserDetails;
+    document.getElementById('wishAnniversaryButton').textContent = texts.wishAnniversary;
+    
+    // If user details are already displayed, update them
+    const userDetails = document.getElementById('userDetails');
+    if (userDetails.innerHTML !== '') {
+        updateUserDetailsLanguage(texts);
+    }
+}
+
+// Add this function to update user details when language changes
+function updateUserDetailsLanguage(texts) {
+    const leftColumn = document.querySelector('#userDetails .column:first-child');
+    const rightColumn = document.querySelector('#userDetails .column:last-child');
+    
+    if (leftColumn && rightColumn) {
+        const registrationDateText = leftColumn.querySelector('p:nth-child(1)');
+        const editCountText = leftColumn.querySelector('p:nth-child(3)');
+        const groupsText = leftColumn.querySelector('p:nth-child(5)');
+        
+        if (registrationDateText) registrationDateText.innerHTML = `<strong>${texts.registrationDate}</strong>`;
+        if (editCountText) editCountText.innerHTML = `<strong>${texts.totalEditCount}</strong>`;
+        if (groupsText) groupsText.innerHTML = `<strong>${texts.groups}</strong>`;
+        
+        const homeWikiText = rightColumn.querySelector('p:nth-child(1)');
+        const idText = rightColumn.querySelector('p:nth-child(3)');
+        const rightsText = rightColumn.querySelector('p:nth-child(5)');
+        
+        if (homeWikiText) homeWikiText.innerHTML = `<strong>${texts.homeWiki}</strong>`;
+        if (idText) idText.innerHTML = `<strong>${texts.id}</strong>`;
+        if (rightsText) rightsText.innerHTML = `<strong>${texts.rights}</strong>`;
+    }
+    
+    const daysToAnniversaryDiv = document.getElementById('daysToAnniversary');
+    if (daysToAnniversaryDiv.innerHTML !== '') {
+        const days = daysToAnniversaryDiv.textContent.match(/\d+/)[0];
+        daysToAnniversaryDiv.innerHTML = `<strong>${texts.daysToNextAnniversary}</strong> ${days}`;
+    }
+}
+
+// Modify the displayUserDetails function to use translations
+function displayUserDetails(user) {
+    const lang = document.getElementById('languageSelector').value;
+    const texts = translations[lang];
+    // ... rest of the displayUserDetails function remains the same, 
+    // just update the text strings to use texts.propertyName ...
+}
+
     setTimeout(function () {
         document.getElementById('usernameInput').style.display = 'block';
 
@@ -498,23 +680,50 @@ function handleInput(event) {
     const query = event.target.value.trim();
     const autocompleteList = document.getElementById('autocompleteList');
     
-    if (query.length < 3) {
+    if (query.length < 2) {
         autocompleteList.style.display = 'none';
         return;
     }
 
-    // Using Wikipedia's API to search for usernames
-    fetch(`https://en.wikipedia.org/w/api.php?action=query&list=allusers&auprefix=${query}&aulimit=10&format=json&origin=*`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.query && data.query.allusers) {
-                displayAutocompleteResults(data.query.allusers);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            autocompleteList.style.display = 'none';
-        });
+    // Using Wikimedia's API to search for users with more comprehensive data
+    const apiUrl = `https://www.mediawiki.org/w/api.php?action=query&list=allusers&auprefix=${query}&aulimit=10&auprop=editcount|registration|groups|rights&format=json&origin=*`;
+
+    // Also search in global users
+    const globalApiUrl = `https://meta.wikimedia.org/w/api.php?action=query&list=globalallusers&aguprefix=${query}&agulimit=10&aguprop=editcount|registration|groups&format=json&origin=*`;
+
+    Promise.all([
+        fetch(apiUrl).then(response => response.json()),
+        fetch(globalApiUrl).then(response => response.json())
+    ])
+    .then(([localData, globalData]) => {
+        let users = [];
+        
+        // Combine local and global users
+        if (localData.query && localData.query.allusers) {
+            users = users.concat(localData.query.allusers.map(user => ({
+                ...user,
+                source: 'local'
+            })));
+        }
+        
+        if (globalData.query && globalData.query.globalallusers) {
+            users = users.concat(globalData.query.globalallusers.map(user => ({
+                ...user,
+                source: 'global'
+            })));
+        }
+
+        // Remove duplicates and sort by edit count
+        users = Array.from(new Set(users.map(user => user.name)))
+            .map(name => users.find(user => user.name === name))
+            .sort((a, b) => (b.editcount || 0) - (a.editcount || 0));
+
+        displayAutocompleteResults(users);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        autocompleteList.style.display = 'none';
+    });
 }
 
 function displayAutocompleteResults(users) {
@@ -543,16 +752,31 @@ function displayAutocompleteResults(users) {
             const before = username.slice(0, index);
             const match = username.slice(index, index + query.length);
             const after = username.slice(index + query.length);
-            usernameDiv.innerHTML = `${before}<strong style="color: #007bff">${match}</strong>${after}`;
+            usernameDiv.innerHTML = `${before}<strong style="color: #2ecc71">${match}</strong>${after}`;
         } else {
             usernameDiv.textContent = username;
         }
 
-        // Create details element
+        // Create details element with more user information
         const detailsDiv = document.createElement('div');
         detailsDiv.className = 'details';
-        const editCount = user.editcount ? `${user.editcount.toLocaleString()} edits` : 'No edits';
-        detailsDiv.textContent = `${editCount}`;
+        
+        const editCount = user.editcount ? 
+            `${user.editcount.toLocaleString()} edits` : 'No edits';
+        
+        const registrationDate = user.registration ? 
+            new Date(user.registration).toLocaleDateString() : 'Unknown registration';
+        
+        const userGroups = user.groups ? 
+            user.groups.slice(0, 3).join(', ') : '';
+        
+        const userSource = user.source === 'global' ? '🌐' : '📝';
+
+        detailsDiv.innerHTML = `
+            <span>${userSource} ${editCount}</span>
+            <span>📅 ${registrationDate}</span>
+            ${userGroups ? `<span>👥 ${userGroups}</span>` : ''}
+        `;
 
         item.appendChild(usernameDiv);
         item.appendChild(detailsDiv);

@@ -16,11 +16,19 @@
         }
 
         header {
-            background-color: #007bff;
+            background: linear-gradient(
+                45deg,
+                #FF512F 0%,
+                #DD2476 50%,
+                #FF8C42 100%
+            );
             color: white;
             padding: 1em;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+            animation: gradientShift 10s ease infinite;
+            background-size: 200% 200%;
         }
         
         .columns {
@@ -51,7 +59,7 @@
 
         label {
             margin-bottom: 10px;
-            color: #007bff;
+            color: #DD2476;
         }
 
         input {
@@ -64,31 +72,33 @@
         }
 
         button {
-            background-color: #007bff;
+            background: linear-gradient(45deg, #FF512F, #DD2476);
             color: white;
             padding: 10px 20px;
             border: none;
             cursor: pointer;
             border-radius: 5px;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background: linear-gradient(45deg, #DD2476, #FF8C42);
+            transform: translateY(-2px);
         }
         
         #wishAnniversaryButton {
-    		background-color: #007bff;
+    		background: linear-gradient(45deg, #FF512F, #DD2476);
     		color: white;
     		padding: 10px 20px;
     		border: none;
     		cursor: pointer;
     		border-radius: 5px;
-    		transition: background-color 0.3s ease
+    		transition: all 0.3s ease
 		}
 
 		#wishAnniversaryButton:hover {
-    		background-color: #0056b3;
+    		background: linear-gradient(45deg, #DD2476, #FF8C42);
+    		transform: translateY(-2px);
 		}
 
         #userDetails {
@@ -100,7 +110,7 @@
         }
 		
         #userDetails h2 {
-            color: #007bff;
+            color: #DD2476;
 			text-align: center;
             margin-bottom: 10px;
         }
@@ -165,8 +175,8 @@
         }
 
         .autocomplete-item.selected {
-            background-color: #3498db;
-            border-left: 4px solid #2ecc71;
+            background: linear-gradient(45deg, #FF512F, #DD2476);
+            border-left: 4px solid #FF8C42;
         }
 
         .autocomplete-item .username {
@@ -220,12 +230,12 @@
         }
 
         .autocomplete-list::-webkit-scrollbar-thumb {
-            background: #3498db;
+            background: linear-gradient(45deg, #FF512F, #DD2476);
             border-radius: 4px;
         }
 
         .autocomplete-list::-webkit-scrollbar-thumb:hover {
-            background: #2ecc71;
+            background: linear-gradient(45deg, #DD2476, #FF8C42);
         }
 
         /* Add animation for items */
@@ -247,8 +257,8 @@
         /* Add these styles */
         #languageSelector {
             background-color: white;
-            border: 1px solid #007bff;
-            color: #007bff;
+            border: 1px solid #DD2476;
+            color: #DD2476;
             padding: 8px;
             border-radius: 5px;
             cursor: pointer;
@@ -257,18 +267,138 @@
         }
 
         #languageSelector:hover {
-            background-color: #007bff;
+            background: linear-gradient(45deg, #FF512F, #DD2476);
             color: white;
         }
 
         #languageSelector option {
             background-color: white;
-            color: #007bff;
+            color: #DD2476;
+        }
+
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            opacity: 0.1;
+            display: flex;
+            align-items: center;
+        }
+
+        .background-scroll {
+            display: flex;
+            animation: scroll 30s linear infinite;
+            gap: 100px;
+            padding: 20px;
+            position: absolute;
+            white-space: nowrap;
+            will-change: transform;
+        }
+
+        .background-scroll img {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(100vw);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Create two rows of scrolling images going in opposite directions */
+        .background-container::after {
+            content: '';
+            position: absolute;
+            top: 70%;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(transparent, rgba(255,255,255,0.1));
+        }
+
+        /* Add a second row of images scrolling in the opposite direction */
+        .background-scroll:nth-child(2) {
+            top: 70%;
+            animation: scroll-reverse 25s linear infinite;
+        }
+
+        @keyframes scroll-reverse {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100vw);
+            }
+        }
+
+        /* Update the main element styles to ensure content is visible */
+        main {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: rgba(255, 255, 255, 0.95); /* Add some transparency */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Update header styles to ensure it's visible over the background */
+        header {
+            background-color: rgba(0, 123, 255, 0.95); /* Add some transparency */
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
     </style>
 </head>
 <body>
+
+<div class="background-container">
+    <div class="background-scroll">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/200px-Wikipedia-logo-v2.svg.png" alt="Wiki Logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Commons-logo.svg/200px-Commons-logo.svg.png" alt="Commons Logo">
+    
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Wikiversity_logo_2017.svg/200px-Wikiversity_logo_2017.svg.png" alt="Wikiversity Logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/200px-Wikipedia-logo-v2.svg.png" alt="Wiki Logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Commons-logo.svg/200px-Commons-logo.svg.png" alt="Commons Logo">
+    
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Wikiversity_logo_2017.svg/200px-Wikiversity_logo_2017.svg.png" alt="Wikiversity Logo">
+    </div>
+    <div class="background-scroll">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/200px-Wikipedia-logo-v2.svg.png" alt="Wiki Logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Commons-logo.svg/200px-Commons-logo.svg.png" alt="Commons Logo">
+
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Wikiversity_logo_2017.svg/200px-Wikiversity_logo_2017.svg.png" alt="Wikiversity Logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/200px-Wikipedia-logo-v2.svg.png" alt="Wiki Logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Commons-logo.svg/200px-Commons-logo.svg.png" alt="Commons Logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Wikisource-logo-en.svg/200px-Wikisource-logo-en.svg.png" alt="Wikisource Logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Wikiversity_logo_2017.svg/200px-Wikiversity_logo_2017.svg.png" alt="Wikiversity Logo">
+    </div>
+</div>
 
 <header>
     <div style="position: absolute; right: 20px; top: 20px;">
@@ -375,7 +505,7 @@ const translations = {
         pageTitle: "विकि वर्षगांठ (उपयोगकर्ता)",
         enterUsername: "उपयोगकर्ता नाम दर्ज करें:",
         getUserDetails: "उपयोगकर्ता विवरण प्राप्त करें",
-        registrationDate: "पंजीकरण तिथि:",
+        registrationDate: "पंजीकरण तिथी:",
         totalEditCount: "कुल संपादन:",
         groups: "समूह:",
         homeWiki: "मुख्य विकि:",
